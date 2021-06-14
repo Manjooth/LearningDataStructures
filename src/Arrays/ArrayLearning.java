@@ -3,6 +3,14 @@ package Arrays;
 import java.util.ArrayList;
 import java.util.List;
 
+/* An array is basic functionality provided by Java. ArrayList is part of collection
+framework in Java. Therefore array members are accessed using [], while ArrayList
+has a set of methods to access elements and modify them.
+
+Array is a fixed size data structure while ArrayList is not. One need not to
+mention the size of Arraylist while creating its object. Even if we specify some
+initial capacity, we can add more elements. */
+
 public class ArrayLearning {
 
     public static void main(String[] args) {
