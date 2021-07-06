@@ -51,11 +51,35 @@ public class BinarySearchTree<T extends Comparable<T>> implements Tree<T>{
 
     @Override
     public T getMin() {
-        return null;
+        // the max item is the leftmost item in the tree
+        if(root == null){
+            return null;
+        }
+
+        return getMin(root);
+    }
+
+    private T getMin(Node<T> node) {
+        if(node.getLeftChild() != null){
+            return getMax(node.getLeftChild());
+        }
+        return node.getData();
     }
 
     @Override
     public T getMax() {
-        return null;
+        // the max item is the rightmost item in the tree
+        if(root == null){
+            return null;
+        }
+
+        return getMax(root);
+    }
+
+    private T getMax(Node<T> node) {
+        if(node.getRightChild() != null){
+            return getMax(node.getRightChild());
+        }
+        return node.getData();
     }
 }
