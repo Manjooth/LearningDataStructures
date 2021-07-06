@@ -19,7 +19,7 @@ public class BinarySearchTree<T extends Comparable<T>> implements Tree<T>{
     private void insert(T data, Node<T> node) {
         // this is when the data is SMALLER than the value in the node
         // GO TO THE LEFT SUBTREE
-        if(root.getData().compareTo(node.getData()) > 0){
+        if(node.getData().compareTo(data) > 0){
             // there is a valid left child so we go there
             if(node.getLeftChild() != null){
                 insert(data, node.getLeftChild());
@@ -46,7 +46,24 @@ public class BinarySearchTree<T extends Comparable<T>> implements Tree<T>{
 
     @Override
     public void traversal() {
+        // in-order traversal in O(n) linear running time
+        if(root == null)  {
+            return;
+        }
+        traversal(root);
 
+    }
+
+    // O(n)
+    private void traversal(Node<T> node) {
+        if(node.getLeftChild() != null){
+            traversal(node.getLeftChild());
+        }
+        System.out.println(node + " - ");
+
+        if(node.getRightChild() != null) {
+            traversal(node.getRightChild());
+        }
     }
 
     @Override
@@ -61,7 +78,7 @@ public class BinarySearchTree<T extends Comparable<T>> implements Tree<T>{
 
     private T getMin(Node<T> node) {
         if(node.getLeftChild() != null){
-            return getMax(node.getLeftChild());
+            return getMin(node.getLeftChild());
         }
         return node.getData();
     }
