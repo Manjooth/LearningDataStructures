@@ -15,6 +15,12 @@ public class App {
         System.out.println(bst.getMin());
         System.out.println(bst.getMax());
         bst.traversal();
+
+        bst.remove(14); // 14 is a leaf node
+        bst.remove(15); // 15 has a single right child
+        bst.remove(5); // 5 has a single left child
+        bst.remove(10); // 10 has 2 children nodes
+        bst.traversal();
     }
 
 }
