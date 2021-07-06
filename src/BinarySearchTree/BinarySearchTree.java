@@ -41,7 +41,102 @@ public class BinarySearchTree<T extends Comparable<T>> implements Tree<T>{
 
     @Override
     public void remove(T data) {
+        if(root == null){
+            remove(data, root);
+        }
+    }
 
+    private void remove(T data, Node<T> node) {
+        if(node == null){
+            return;
+        }
+
+        // first we have to search for the item we want to remove
+        if(data.compareTo(node.getData()) < 0){
+            remove(data, node.getLeftChild());
+        }else if(data.compareTo(node.getData()) > 0){
+            remove(data, node.getRightChild());
+        }else {
+            // we have found the item we want to remove!!
+
+            // if the node is a lead node (without left + right children)
+            if(node.getRightChild() == null && node.getLeftChild() == null){
+                // whether the node is a left child or a right child of its parent
+                Node<T> parent = node.getParentNode();
+                // this means the node is a left child
+                if(parent != null && parent.getLeftChild() == node){
+                    parent.setLeftChild(null);
+                    // the node is a right child
+                }else if (parent != null && parent.getRightChild() == node){
+                    parent.setRightChild(null);
+                }
+
+                // maybe the root node is the one we want to remove
+                if(parent == null){
+                    root = null;
+                }
+
+                // remove the node and makes it eligible for GC
+                node = null;
+
+                // when we remove items with a single child (CASE 2)
+                // a single right child
+            } else if(node.getRightChild() != null && node.getLeftChild() == null){
+                Node<T> parent = node.getParentNode();
+                if(parent != null && parent.getLeftChild() == node){
+                    parent.setLeftChild(node.getRightChild());
+                }else if (parent != null && parent.getRightChild() == node){
+                    parent.setRightChild(node.getRightChild());
+                }
+
+                // when we deal with the root node
+                if(parent == null){
+                    root = node.getRightChild();
+                }
+
+                // we have to update the right child's parent
+                node.getRightChild().setParentNode(parent);
+                node = null;
+
+                // it is approximately the same, but we have to deal with left child (CASE 2)
+            }else if(node.getRightChild() == null && node.getLeftChild() != null) {
+                Node<T> parent = node.getParentNode();
+                if (parent != null && parent.getLeftChild() == node) {
+                    parent.setLeftChild(node.getLeftChild());
+                } else if (parent != null && parent.getRightChild() == node) {
+                    parent.setRightChild(node.getLeftChild());
+                }
+
+                // when we deal with the root node
+                if (parent == null) {
+                    root = node.getLeftChild();
+                }
+
+                // we have to update the right child's parent
+                node.getLeftChild().setParentNode(parent);
+                node = null;
+            }else{
+                // remove 2 children
+                // find the predecessor (max item in the left subtree)
+                Node<T> predecessor = getPredecessor(node.getLeftChild());
+
+                // swap just the values !!
+                T temp = predecessor.getData();
+                predecessor.setData(node.getData());
+                node.setData(temp);
+
+                // we have to call the delete method recursively on the predecessor
+                remove(data, predecessor);
+            }
+        }
+    }
+
+    private Node<T> getPredecessor(Node<T> node) {
+        if(node.getRightChild() != null){
+            return getPredecessor(node.getRightChild());
+        }
+
+        return node;
     }
 
     @Override
@@ -59,7 +154,7 @@ public class BinarySearchTree<T extends Comparable<T>> implements Tree<T>{
         if(node.getLeftChild() != null){
             traversal(node.getLeftChild());
         }
-        System.out.println(node + " - ");
+        System.out.print(node + " --> ");
 
         if(node.getRightChild() != null) {
             traversal(node.getRightChild());
