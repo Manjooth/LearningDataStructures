@@ -9,4 +9,5 @@ public interface Tree<T extends Comparable<T>> {
     public T getMin();
     public T getMax();
     public Node<T> getRoot();
+    public Node<T> getSmallest(Node<T> node, int k);
 }

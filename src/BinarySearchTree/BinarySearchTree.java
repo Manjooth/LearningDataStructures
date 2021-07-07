@@ -197,6 +197,44 @@ public class BinarySearchTree<T extends Comparable<T>> implements Tree<T>{
         return root;
     }
 
+    @Override
+    // Write an efficient in-place algorithm to find the k-th smallest (largest)
+    // item in a binary search tree!
+    public Node<T> getSmallest(Node<T> node, int k) {
+        // if k is smaller than the number of nodes in the left subtree: then the
+        // k-th smallest item must be in the left subtree
+        // if k is greater than the number of nodes in the left subtree: of course
+        // we have to check the right subtree
+
+        int n = treeSize(node.getLeftChild()) + 1;
+        // this is when we find the kth smallest item
+        if(n == k){
+            return node;
+        }
+
+        if(n > k){
+            return getSmallest(node.getLeftChild(), k);
+        }
+
+        if(n < k){
+            return getSmallest(node.getRightChild(), k - n);
+        }
+
+        return null;
+    }
+
+    // calculate the size of a subtree with root node 'node'
+    private int treeSize(Node<T> node){
+        // this is the base case
+        if(node == null){
+            return 0;
+        }
+
+        // recursively sum up the size of the left subtree + size of right subtree
+        // size of tree = size left subtree + size of right subtree + 1 (because of root)
+        return (treeSize(node.getLeftChild()) + treeSize(node.getRightChild())) + 1;
+    }
+
     private T getMax(Node<T> node) {
         if(node.getRightChild() != null){
             return getMax(node.getRightChild());
