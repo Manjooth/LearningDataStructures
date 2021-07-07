@@ -192,10 +192,86 @@ public class BinarySearchTree<T extends Comparable<T>> implements Tree<T>{
         return getMax(root);
     }
 
+    @Override
+    public Node<T> getRoot() {
+        return root;
+    }
+
+    @Override
+    // Write an efficient in-place algorithm to find the k-th smallest (largest)
+    // item in a binary search tree!
+    public Node<T> getSmallest(Node<T> node, int k) {
+        // if k is smaller than the number of nodes in the left subtree: then the
+        // k-th smallest item must be in the left subtree
+        // if k is greater than the number of nodes in the left subtree: of course
+        // we have to check the right subtree
+
+        int n = treeSize(node.getLeftChild()) + 1;
+        // this is when we find the kth smallest item
+        if(n == k){
+            return node;
+        }
+
+        if(n > k){
+            return getSmallest(node.getLeftChild(), k);
+        }
+
+        if(n < k){
+            return getSmallest(node.getRightChild(), k - n);
+        }
+
+        return null;
+    }
+
+    // calculate the size of a subtree with root node 'node'
+    private int treeSize(Node<T> node){
+        // this is the base case
+        if(node == null){
+            return 0;
+        }
+
+        // recursively sum up the size of the left subtree + size of right subtree
+        // size of tree = size left subtree + size of right subtree + 1 (because of root)
+        return (treeSize(node.getLeftChild()) + treeSize(node.getRightChild())) + 1;
+    }
+
     private T getMax(Node<T> node) {
         if(node.getRightChild() != null){
             return getMax(node.getRightChild());
         }
         return node.getData();
+    }
+
+    @Override
+    public int getAgesSum() {
+        // Write an efficient algorithm to calculate the total sum of ages in a family tree. A family tree is a BST in this
+        // case where all the nodes contain a Person object with [name,age] attributes.
+        // Hint: we have to make a tree traversal so the running time of the algorithm will be O(n) linear running time
+        return getAges(root);
+    }
+
+    private int getAges(Node<T> node) {
+        System.out.println("considering node " + node);
+
+        // we have to reinitialise the variables (sum is the parent's node value so the sum of the subtrees so far)
+        int sum = 0, leftSum = 0, rightSum = 0;
+
+        // null nodes have sum value of 0
+        if(node == null){
+            return 0;
+        }
+
+        // we do a simple post-order traversal because here we have to calculate both left and right values to be able
+        // to calculate the parent's value (sum of children's ages)
+        // check the left subtree recursively
+        leftSum = getAges(node.getLeftChild());
+        // check the right subtree recursively
+        rightSum = getAges(node.getRightChild());
+
+        // update the sum... given node's value is the own value + left subtree sum + right subtree sum
+        sum = ((PersonExample)node.getData()).getAge() + leftSum + rightSum;
+        System.out.println("condsidering node " + node + " total ages so far is " + sum);
+
+        return sum;
     }
 }
