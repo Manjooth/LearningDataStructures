@@ -241,4 +241,37 @@ public class BinarySearchTree<T extends Comparable<T>> implements Tree<T>{
         }
         return node.getData();
     }
+
+    @Override
+    public int getAgesSum() {
+        // Write an efficient algorithm to calculate the total sum of ages in a family tree. A family tree is a BST in this
+        // case where all the nodes contain a Person object with [name,age] attributes.
+        // Hint: we have to make a tree traversal so the running time of the algorithm will be O(n) linear running time
+        return getAges(root);
+    }
+
+    private int getAges(Node<T> node) {
+        System.out.println("considering node " + node);
+
+        // we have to reinitialise the variables (sum is the parent's node value so the sum of the subtrees so far)
+        int sum = 0, leftSum = 0, rightSum = 0;
+
+        // null nodes have sum value of 0
+        if(node == null){
+            return 0;
+        }
+
+        // we do a simple post-order traversal because here we have to calculate both left and right values to be able
+        // to calculate the parent's value (sum of children's ages)
+        // check the left subtree recursively
+        leftSum = getAges(node.getLeftChild());
+        // check the right subtree recursively
+        rightSum = getAges(node.getRightChild());
+
+        // update the sum... given node's value is the own value + left subtree sum + right subtree sum
+        sum = ((PersonExample)node.getData()).getAge() + leftSum + rightSum;
+        System.out.println("condsidering node " + node + " total ages so far is " + sum);
+
+        return sum;
+    }
 }

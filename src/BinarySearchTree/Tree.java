@@ -10,4 +10,5 @@ public interface Tree<T extends Comparable<T>> {
     public T getMax();
     public Node<T> getRoot();
     public Node<T> getSmallest(Node<T> node, int k);
+    public int getAgesSum();
 }

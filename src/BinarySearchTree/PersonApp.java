@@ -16,6 +16,9 @@ public class PersonApp {
         // will output in a descending age order
         pe.traversal();
 
+        // should return 10 + 3 + 21 + 28 + 90 = 152
+        System.out.println(pe.getAgesSum());
+
     }
 
 }
