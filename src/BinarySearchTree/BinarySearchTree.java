@@ -192,6 +192,11 @@ public class BinarySearchTree<T extends Comparable<T>> implements Tree<T>{
         return getMax(root);
     }
 
+    @Override
+    public Node<T> getRoot() {
+        return root;
+    }
+
     private T getMax(Node<T> node) {
         if(node.getRightChild() != null){
             return getMax(node.getRightChild());
